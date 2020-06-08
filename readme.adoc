@@ -1,0 +1,38 @@
+= Spring Boot Notes
+
+== Issue when a DMN Input variable has the same name of a data object
+
+See https://issues.redhat.com/browse/JBPM-9024
+
+When deploying on JBoss EAP setting
+
+`<property name="org.drools.server.filter.classes" value="true"/>`
+
+in standalone.xml solves the problem.
+
+When deploying on Spring Boot setting the same parameter to true in
+application.properties has no effect. One needs to use a different workaround
+as suggested in the Jira above.
+
+== Jackson library problem with Spring Boot 2.2.x
+
+See https://issues.redhat.com/browse/JBPM-8937
+
+When using a version of Spring Boot higher than 2.1.x a conflict
+between the Jackson library versions used by Spring Boot and
+by Kie Server causes an error.
+
+Unless the Kie Server Jackson library is upgraded this problem will prevent
+the use of the most recent Spring Boot version.
+
+== Issue with the default H2 database configuration
+
+The default H2 configuration in application.properties
+
+`spring.datasource.url=jdbc:h2:./target/spring-boot-jbpm;MVCC=true`
+
+causes errors such
+
+`java.sql.SQLException: java.sql.SQLException: org.h2.jdbc.JdbcSQLNonTransientConnectionException: Unsupported connection setting "MVCC" [90113-200]`
+
+Removing the MVCC=true solves the problem.
